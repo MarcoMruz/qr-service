@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+{{template "head"}}
+<title>Sign in · QR code maker</title>
+</head>
+<body>
+<main class="page">
+  <h1>QR code maker</h1>
+  <p class="lead">Enter the team password to continue.</p>
+  <form method="post" action="/login" class="stack">
+    <input type="text" name="username" value="team" autocomplete="username" hidden>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required autofocus
+      {{- if .Error}} aria-invalid="true" aria-describedby="login-error"{{end}}>
+    {{- if .Error}}
+    <p id="login-error" class="error" role="alert">{{.Error}}</p>
+    {{- end}}
+    <button type="submit" class="button primary">Sign in</button>
+  </form>
+</main>
+</body>
+</html>

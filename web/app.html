@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+{{template "head"}}
+<title>QR code maker</title>
+<script src="/static/app.js" defer></script>
+<script src="/static/alpine.min.js" defer></script>
+</head>
+<body>
+<main class="page" x-data="qrMaker">
+  <h1>QR code maker</h1>
+
+  <form class="stack" x-show="showForm" @submit.prevent="generate()" novalidate>
+    <label for="qr-text">Paste a link or text</label>
+    <textarea id="qr-text" rows="3" placeholder="https://example.com" autofocus
+      x-ref="input" x-model="text" @input="clearError()" @keydown.enter="submitOnEnter($event)"
+      :aria-invalid="hasError" aria-describedby="qr-error"></textarea>
+    <p id="qr-error" class="error" role="alert" x-show="hasError" x-text="error" x-cloak></p>
+    <button type="submit" class="button primary" :disabled="loading" x-text="submitLabel">Create QR code</button>
+  </form>
+
+  <section class="result" x-show="showResult" x-cloak aria-label="Your QR code">
+    <img class="qr" :src="imageUrl" width="256" height="256" alt="QR code">
+    <p class="encoded"><span class="encoded-label">Contains</span> <span x-text="submittedText"></span></p>
+    <div class="actions">
+      <a class="button primary" :href="imageUrl" download="qr-code.png" x-ref="download">Download PNG</a>
+      <button type="button" class="button secondary" @click="reset()">Make another</button>
+    </div>
+  </section>
+
+  <noscript><p class="error">This page needs JavaScript turned on.</p></noscript>
+</main>
+</body>
+</html>

@@ -1,0 +1,200 @@
+:root {
+  --paper: #f4f2ec;
+  --field: #ffffff;
+  --ink: #1a1a17;
+  --muted: #5c5a52;
+  --line: #c9c5b8;
+  --accent: #2340c4;
+  --accent-hover: #1a31a0;
+  --on-accent: #ffffff;
+  --error: #b3261e;
+  --frame-shadow: 0 1px 2px rgb(26 26 23 / 0.08), 0 12px 32px -8px rgb(26 26 23 / 0.18);
+  --radius: 10px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141413;
+    --field: #1f1f1d;
+    --ink: #ecebe6;
+    --muted: #a8a69c;
+    --line: #47463f;
+    --accent: #93a6ff;
+    --accent-hover: #b3c0ff;
+    --on-accent: #0d1440;
+    --error: #ff8a80;
+    --frame-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.6);
+  }
+}
+
+[x-cloak] { display: none !important; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  width: min(100% - 2rem, 28rem);
+  margin: 0 auto;
+  padding: clamp(3rem, 12vh, 7rem) 0 3rem;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.875rem, 6vw, 2.5rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.lead {
+  margin: 0 0 2rem;
+  color: var(--muted);
+}
+
+.stack {
+  display: grid;
+  gap: 0.625rem;
+  margin-top: 2rem;
+}
+
+.lead + .stack { margin-top: 0; }
+
+label { font-weight: 600; }
+
+input, textarea {
+  width: 100%;
+  padding: 0.75rem 0.875rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--field);
+  color: var(--ink);
+  font: inherit;
+  font-size: max(1rem, 16px); /* 16px stops iOS from zooming into the field */
+}
+
+textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+  overflow-wrap: anywhere;
+}
+
+input::placeholder, textarea::placeholder { color: var(--muted); }
+
+input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--error); }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input:focus-visible, textarea:focus-visible {
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+
+.error {
+  margin: 0;
+  color: var(--error);
+  font-weight: 500;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms;
+}
+
+.stack .button { margin-top: 0.5rem; }
+
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.primary:hover { background: var(--accent-hover); }
+
+.primary:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.secondary {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.secondary:hover { border-color: var(--ink); }
+
+.result {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+/* QR stays black on white in dark mode too, so every scanner can read it. */
+.qr {
+  width: min(100%, 16rem);
+  height: auto;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background: #ffffff;
+  box-shadow: var(--frame-shadow);
+  animation: reveal 420ms var(--ease-out);
+}
+
+.encoded {
+  width: 100%;
+  margin: 0;
+  color: var(--muted);
+  text-align: center;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.encoded-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+    filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr { animation: none; }
+  .button { transition: none; }
+}
